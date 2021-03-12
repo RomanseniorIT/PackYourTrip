@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "523559818054",
+    "project_id": "packyourtrip-37199",
+    "storage_bucket": "packyourtrip-37199.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523559818054:android:cd40f3c5de45f46d3c4b47",
+        "android_client_info": {
+          "package_name": "com.example.packyourtrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523559818054-96t12cis9j2pi14akv2jm8uora2ucrj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIb7eZxhyMRMZYda8pZayXsQ4WlT-poHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523559818054-96t12cis9j2pi14akv2jm8uora2ucrj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
