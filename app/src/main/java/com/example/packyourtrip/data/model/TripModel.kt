@@ -1,6 +1,9 @@
 package com.example.packyourtrip.data.model
 
+import com.google.firebase.firestore.DocumentId
+
 data class TripModel(
+    @DocumentId
     val id: String? = null,
     val title: String? = null,
     val dateFrom: Long? = null,
