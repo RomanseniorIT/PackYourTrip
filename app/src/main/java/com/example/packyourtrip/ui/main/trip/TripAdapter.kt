@@ -4,16 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.ui.main.TripListener
 
 class TripAdapter(private val listener : TripListener) : RecyclerView.Adapter<TripViewHolder>() {
-    private val listTrips: MutableList<String> = mutableListOf(
-        "Поездка 1",
-        "Поездка 2",
-        "Поездка 3",
-        "Поездка 4",
-        "Поездка 5",
-    )
+    private val listTrips: MutableList<TripModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
         return TripViewHolder(
@@ -23,8 +18,14 @@ class TripAdapter(private val listener : TripListener) : RecyclerView.Adapter<Tr
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        holder.onBind(listTrips.get(position), listener)
+        holder.onBind(listTrips[position], listener)
     }
 
     override fun getItemCount(): Int = listTrips.size
+
+    fun bindTrips(trips: List<TripModel>) {
+        listTrips.clear()
+        listTrips.addAll(trips)
+        notifyDataSetChanged()
+    }
 }
