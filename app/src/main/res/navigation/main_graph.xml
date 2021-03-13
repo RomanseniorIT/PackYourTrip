@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.packyourtrip.ui.splash.SplashFragment"
+        android:label="SplashFragment">
+
+        <action
+            android:id="@+id/action_splashFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@+id/main_graph"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_splashFragment_to_authFragment"
+            app:destination="@id/authFragment"
+            app:popUpTo="@+id/main_graph"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.packyourtrip.ui.auth.AuthFragment"
+        android:label="AuthFragment">
+
+        <action
+            android:id="@+id/action_authFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@+id/main_graph"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.packyourtrip.ui.main.MainFragment"
+        android:label="MainFragment">
+
+        <action
+            android:id="@+id/action_mainFragment_to_tripCheckListFragment"
+            app:destination="@id/tripCheckListFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_authFragment"
+            app:destination="@+id/authFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/tripFragment"
+        android:name="com.example.packyourtrip.ui.main.trip.TripFragment"
+        android:label="TripFragment">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/tripCheckListFragment"
+        android:name="com.example.packyourtrip.ui.checklist.TripCheckListFragment"
+        android:label="TripCheckListFragment">
+
+        <argument
+            android:name="trip_id"
+            app:argType="string"
+            />
+
+    </fragment>
+
+
+
+</navigation>
