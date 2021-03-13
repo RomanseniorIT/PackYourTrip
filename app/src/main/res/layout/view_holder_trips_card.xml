@@ -13,7 +13,7 @@
     app:strokeWidth="0.5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0.5dp">
 
@@ -31,13 +31,22 @@
             tools:text="Хакатон" />
 
         <TextView
-            android:id="@+id/tv_date_trip"
+            android:id="@+id/tv_city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_trip"
+            tools:text = "Виртуальная реальность"/>
+
+        <TextView
+            android:id="@+id/tv_date_trip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd ="10dp"
             android:textColor="#858585"
             app:layout_constraintTop_toBottomOf="@id/tv_name_trip"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="12.03.2021" />
 
