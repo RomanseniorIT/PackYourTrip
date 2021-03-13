@@ -7,10 +7,12 @@ import com.example.packyourtrip.R
 
 class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
     private val listThings: MutableList<String> = mutableListOf(
-        "Стандартная Вещь 1",
-        "Стандартная Вещь 2",
-        "Стандартная Вещь 3",
-        "Стандартная Вещь 4"
+        "Паспорт",
+        "Билет",
+        "Книга",
+        "Ноутбук",
+        "Зарядка для ноутбука",
+        "Плавки"
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultThingViewHolder {
@@ -24,6 +26,8 @@ class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
         holder.onBind(listThings.get(position))
 
     override fun getItemCount() = listThings.size
+
+    fun getItems(): List<String> = listThings
 
     fun updateData(list: List<String>) {
         listThings.clear()

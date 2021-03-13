@@ -11,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.packyourtrip.R
 
 class LeaveCheckListFragment() : Fragment(R.layout.fragment_leave_checklist) {
-    private val spanCount = 5
+    private val spanCount = 12
     private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +31,23 @@ class LeaveCheckListFragment() : Fragment(R.layout.fragment_leave_checklist) {
         recyclerActions.adapter = ActionAdapter()
 
         val recyclerDefaultActions: RecyclerView = view.findViewById(R.id.recycler_default_actions)
-        recyclerDefaultActions.layoutManager = GridLayoutManager(context, spanCount)
-        recyclerDefaultActions.adapter = DefaultActionAdapter()
+        val adapter = DefaultActionAdapter()
+        val layoutManager = GridLayoutManager(context, spanCount)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                val items = adapter.getItems()
+                val item = items.get(position)
+                val itemLength = item.length
+                return when {
+                    itemLength < 8 -> 2
+                    itemLength < 9 -> 3
+                    itemLength < 18 -> 4
+                    else -> 12
+                }
+            }
+        }
+        recyclerDefaultActions.layoutManager = layoutManager //GridLayoutManager(context, spanCount)
+        recyclerDefaultActions.adapter = adapter
     }
 
 
