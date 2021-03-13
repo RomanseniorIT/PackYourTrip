@@ -90,4 +90,7 @@ dependencies {
     // Lottie
     implementation 'com.airbnb.android:lottie:3.6.0'
 
+    //Pref
+    implementation "com.chibatching:kotpref:1.4.0"
+
 }
