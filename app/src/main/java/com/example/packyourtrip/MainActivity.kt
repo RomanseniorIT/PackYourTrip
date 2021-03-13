@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.packyourtrip.data.model.SavedThingsModel
 import com.example.packyourtrip.data.model.ThingModel
 import com.example.packyourtrip.data.model.TripModel
 import com.firebase.ui.auth.AuthUI
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnChangeThing: Button
     lateinit var btnListener: Button
     var trips = mutableListOf<TripModel>()
+    var savedThingsList = mutableListOf<SavedThingsModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,7 +126,6 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
             }
-
     }
 
     // Добавление пользователя в поездку
@@ -176,6 +177,57 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "Current data: null")
             }
         }
+    }
+
+
+    //Добавление списка сохраненных вещей
+    private fun addSavedThings(savedThingsModel: SavedThingsModel) {
+        db.collection("savedThings").add(savedThingsModel)
+            .addOnSuccessListener { Log.d(TAG, "Successfully insert!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error insert document", e) }
+    }
+
+    //Добавление вещей в список сохраненных
+    private fun addThingToSaved(savedThingsListId: String, thing: String) {
+        db.collection("savedThings").document(savedThingsListId)
+            .update("savedThings", FieldValue.arrayUnion(thing))
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+
+    //Изменение в списке вещей
+    //Модель уже с внесенным изменением
+    private fun changeSavedThings(savedThingsModel: SavedThingsModel) {
+        if (savedThingsModel.id != null) {
+            db.collection("savedThings").document(savedThingsModel.id)
+                .update("savedThings", savedThingsModel.things)
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+        }
+    }
+
+    //Получение списков сохраеннных вещей доступных пользователю
+    private fun loadSavedThings(userEmail: String) {
+        savedThingsList = mutableListOf<SavedThingsModel>()
+        db.collection("savedThings")
+            .whereArrayContains("owner", userEmail)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val savedList = document.toObject(SavedThingsModel::class.java)
+                    savedThingsList.add(savedList)
+                }
+                textView.text = trips.toString()
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+    }
+
+    //Удаление из списка вещей
+    private fun deleteSavedThings(savedThingsListId: String, thing: String) {
+        db.collection("savedThings").document(savedThingsListId)
+            .update("things", FieldValue.arrayRemove(thing))
     }
 
     override fun onStart() {
