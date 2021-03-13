@@ -23,9 +23,11 @@ class TripAdapter(private val listener : TripListener) : RecyclerView.Adapter<Tr
 
     override fun getItemCount(): Int = listTrips.size
 
+    fun getTrips(): List<TripModel> = listTrips
+
     fun bindTrips(trips: List<TripModel>) {
         listTrips.clear()
         listTrips.addAll(trips)
-        notifyDataSetChanged()
+       // notifyDataSetChanged()
     }
 }
