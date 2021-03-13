@@ -51,12 +51,14 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val items = defaultThingAdapter.getItems()
-                val item = items[position]
-                val itemLength = item.length
+                val item = items[position].title
+                val itemLength = item?.length ?: -1
                 return when {
-                    itemLength < 8 -> 2
+                    itemLength < 1 -> 0
+                    itemLength < 5 -> 2
                     itemLength < 9 -> 3
-                    itemLength < 18 -> 4
+                    itemLength < 14 -> 4
+                    itemLength < 21 -> 6
                     else -> 12
                 }
             }
