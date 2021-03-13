@@ -38,6 +38,7 @@ class TripViewModel @Inject constructor(
     fun addTrip(tripModel: TripModel) {
         viewModelScope.launch {
             tripRepository.addTrip(tripModel)
+            loadTrips()
         }
     }
 
