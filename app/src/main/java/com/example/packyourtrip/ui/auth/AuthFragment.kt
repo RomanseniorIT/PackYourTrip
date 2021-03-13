@@ -49,14 +49,22 @@ class AuthFragment : DaggerFragment() {
         authViewModel.signIn.observe(viewLifecycleOwner, {
             startForAuthUI.launch(it)
         })
+
+        authViewModel.isLoggedIn.observe(viewLifecycleOwner, { loggedIn ->
+            if (loggedIn) {
+                findNavController().navigate(
+                    AuthFragmentDirections.actionAuthFragmentToMainFragment()
+                )
+            } else {
+                authViewModel.signIn()
+            }
+        })
     }
 
     private val startForAuthUI =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
-                findNavController().navigate(
-                    AuthFragmentDirections.actionAuthFragmentToMainFragment()
-                )
+                authViewModel.isUserLoggedIn()
             } else {
                 val response = IdpResponse.fromResultIntent(result.data)
                 Toast.makeText(

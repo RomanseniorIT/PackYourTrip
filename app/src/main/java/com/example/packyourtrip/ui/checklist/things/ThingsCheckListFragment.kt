@@ -1,44 +1,47 @@
 package com.example.packyourtrip.ui.checklist.things
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.example.packyourtrip.R
-import com.example.packyourtrip.ui.checklist.TripCheckListFragment
+import com.example.packyourtrip.databinding.FragmentThingChecklistBinding
 
 
 class ThingsCheckListFragment : Fragment(R.layout.fragment_thing_checklist) {
     private val spanCount = 12
-    private lateinit var viewPager: ViewPager2
+    private var _binding: FragmentThingChecklistBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentThingChecklistBinding.inflate(inflater, container, false)
+        return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler(view)
+        initRecycler()
 
     }
 
-    private fun initRecycler(view: View) {
-        val recyclerThings: RecyclerView = view.findViewById(R.id.recycler_things)
-        recyclerThings.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        recyclerThings.adapter = ThingAdapter()
+    private fun initRecycler() {
+        binding.recyclerThings.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.recyclerThings.adapter = ThingAdapter()
 
-        val recyclerDefaultThings: RecyclerView = view.findViewById(R.id.recycler_default_things)
         val adapter = DefaultThingAdapter()
         val layoutManager = GridLayoutManager(context, spanCount)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val items = adapter.getItems()
-                val item = items.get(position)
+                val item = items[position]
                 val itemLength = item.length
                 return when {
                     itemLength < 8 -> 2
@@ -48,9 +51,8 @@ class ThingsCheckListFragment : Fragment(R.layout.fragment_thing_checklist) {
                 }
             }
         }
-        //recyclerDefaultThings.layoutManager = GridLayoutManager(context, spanCount)
-        recyclerDefaultThings.layoutManager = layoutManager
-        recyclerDefaultThings.adapter = adapter
+        binding.recyclerDefaultThings.layoutManager = layoutManager
+        binding.recyclerDefaultThings.adapter = adapter
     }
 
 
