@@ -53,7 +53,7 @@ class SplashFragment : DaggerFragment() {
     private fun initObservers() {
         splashViewModel.isLoggedIn.observe(viewLifecycleOwner, { loggedIn ->
             if (loggedIn) {
-                findNavController().navigate(R.id.action_splashFragment_to_tripCheckListFragment)
+                findNavController().navigate(R.id.action_splashFragment_to_mainFragment)
             } else {
                 createSignInIntent()
             }
@@ -84,7 +84,7 @@ class SplashFragment : DaggerFragment() {
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(requireActivity(), "Авторизация: ${user.email}", Toast.LENGTH_LONG).show();
-                findNavController().navigate(R.id.action_splashFragment_to_tripCheckListFragment)
+                findNavController().navigate(R.id.action_splashFragment_to_mainFragment)
             } else {
                 Toast.makeText(
                     requireActivity(),

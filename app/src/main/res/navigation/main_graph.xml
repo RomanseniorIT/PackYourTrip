@@ -10,7 +10,24 @@
         android:label="SplashFragment">
 
         <action
-            android:id="@+id/action_splashFragment_to_tripCheckListFragment"
+            android:id="@+id/action_splashFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.packyourtrip.ui.main.MainFragment"
+        android:label="MainFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/tripFragment"
+        android:name="com.example.packyourtrip.ui.main.trip.TripFragment"
+        android:label="TripFragment">
+
+        <action
+            android:id="@+id/action_tripFragment_to_tripCheckListFragment"
             app:destination="@id/tripCheckListFragment" />
 
     </fragment>
@@ -18,6 +35,15 @@
     <fragment
         android:id="@+id/tripCheckListFragment"
         android:name="com.example.packyourtrip.ui.checklist.TripCheckListFragment"
-        android:label="TripCheckListFragment"/>
+        android:label="TripCheckListFragment">
+
+        <argument
+            android:name="trip_id"
+            app:argType="String"
+            />
+
+    </fragment>
+
+
 
 </navigation>
