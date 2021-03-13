@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.injectViewModel
 import com.example.packyourtrip.ui.main.MainFragmentDirections
 import com.example.packyourtrip.ui.dialog.CreateTripDialog
@@ -39,9 +40,15 @@ class TripFragment : DaggerFragment(), TripListener {
         super.onViewCreated(view, savedInstanceState)
         init()
         initRecycler(view)
+        val fabBtn: FloatingActionButton = view.findViewById(R.id.btn_add_trip)
+        fabBtn.setOnClickListener { onClickFabBtn() }
         tripViewModel.tripList.observe(viewLifecycleOwner) { trips ->
             tripAdapter.bindTrips(trips)
         }
+    }
+
+    private fun onClickFabBtn() {
+        CreateTripDialog(this).show(parentFragmentManager, "CreateTripDialog")
     }
 
     override fun onResume() {
@@ -75,7 +82,8 @@ class TripFragment : DaggerFragment(), TripListener {
         )
     }
 
-    override fun saveBtnClicked() {
+    override fun saveBtnClicked(tripName: String, city: String, date: String) {
+        tripViewModel.addTrip(TripModel(title = tripName, city = city, dateFrom = 100000))
         findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
     }
 }
