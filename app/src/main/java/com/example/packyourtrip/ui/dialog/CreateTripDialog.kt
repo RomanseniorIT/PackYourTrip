@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.example.packyourtrip.R
+import com.example.packyourtrip.ui.main.TripListener
 
-class CreateTripDialog: DialogFragment() {
+class CreateTripDialog(private val listener: TripListener): DialogFragment() {
 
 
     override fun onCreateView(
@@ -27,7 +27,8 @@ class CreateTripDialog: DialogFragment() {
     }
 
     private fun onClickBtnSave(){
-        findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
+       listener.saveBtnClicked()
+        // findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
         dismiss()
     }
 

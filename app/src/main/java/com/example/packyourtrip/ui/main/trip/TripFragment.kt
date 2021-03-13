@@ -30,8 +30,9 @@ class TripFragment : Fragment(R.layout.fragment_trip), TripListener {
     }
 
     private fun onClickFabBtn() {
-        CreateTripDialog().show(parentFragmentManager, "CreateTripDialog")
+        CreateTripDialog(this).show(parentFragmentManager, "CreateTripDialog")
     }
+
 
     companion object {
 
@@ -41,6 +42,10 @@ class TripFragment : Fragment(R.layout.fragment_trip), TripListener {
     }
 
     override fun itemClicked() {
+        findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
+    }
+
+    override fun saveBtnClicked() {
         findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
     }
 }
