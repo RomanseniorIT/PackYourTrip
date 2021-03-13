@@ -37,6 +37,8 @@ class TripViewModel @Inject constructor(
 
     fun addTrip(tripModel: TripModel) {
         viewModelScope.launch {
+            val email = MainPrefs.userEmail
+            tripModel.owner.add(email)
             tripRepository.addTrip(tripModel)
             loadTrips()
         }
