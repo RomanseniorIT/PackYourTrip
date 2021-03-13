@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.packyourtrip.R
+import dagger.android.support.DaggerFragment
 
-class LeaveCheckListFragment() : Fragment(R.layout.fragment_leave_checklist) {
+class LeaveCheckListFragment() : DaggerFragment(R.layout.fragment_leave_checklist) {
     private val spanCount = 12
     private lateinit var viewPager: ViewPager2
 

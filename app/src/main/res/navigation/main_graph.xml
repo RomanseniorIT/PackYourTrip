@@ -52,7 +52,6 @@
         android:name="com.example.packyourtrip.ui.main.trip.TripFragment"
         android:label="TripFragment">
 
-
     </fragment>
 
     <fragment

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 import com.example.packyourtrip.injectViewModel
+import com.example.packyourtrip.ui.main.MainFragmentDirections
 import com.example.packyourtrip.ui.main.TripListener
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -60,7 +61,9 @@ class TripFragment : DaggerFragment(), TripListener {
             TripFragment()
     }
 
-    override fun itemClicked() {
-        findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
+    override fun itemClicked(tripId: String) {
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToTripCheckListFragment(tripId)
+        )
     }
 }
