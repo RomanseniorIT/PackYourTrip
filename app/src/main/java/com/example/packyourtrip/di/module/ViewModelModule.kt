@@ -28,7 +28,6 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(TripCheckListViewModel::class)
-    @Singleton
     abstract fun tripCheckListViewModel(viewModel: TripCheckListViewModel): ViewModel
 
     @Binds
