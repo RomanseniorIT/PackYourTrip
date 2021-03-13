@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 import com.example.packyourtrip.databinding.FragmentThingChecklistBinding
 import com.example.packyourtrip.injectViewModel
+import com.example.packyourtrip.ui.checklist.TripCheckListFragment
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -22,8 +23,6 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
     private lateinit var thingAdapter: ThingAdapter
     private lateinit var defaultThingAdapter: DefaultThingAdapter
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var viewModel: TripCheckListViewModel
 
     override fun onCreateView(
@@ -74,11 +73,10 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
     }
 
     private fun init() {
-        viewModel = injectViewModel(viewModelFactory)
+        viewModel = (parentFragment as TripCheckListFragment).viewModel
         thingAdapter = ThingAdapter()
         defaultThingAdapter = DefaultThingAdapter()
     }
-
 
     companion object {
         @JvmStatic
