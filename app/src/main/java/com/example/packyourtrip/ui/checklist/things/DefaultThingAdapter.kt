@@ -4,15 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.data.model.ThingModel
 
 class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
-    private val listThings: MutableList<String> = mutableListOf(
-        "Паспорт",
-        "Билет",
-        "Книга",
-        "Ноутбук",
-        "Зарядка для ноутбука",
-        "Плавки"
+    private val listThings: MutableList<ThingModel> = mutableListOf(
+        ThingModel(title = "Паспорт"),
+        ThingModel(title = "Билет"),
+        ThingModel(title = "Книга"),
+        ThingModel(title = "Ноутбук"),
+        ThingModel(title = "Зарядка для ноутбука"),
+        ThingModel(title = "Зарядка для "),
+        ThingModel(title = "Зарядка для ноу"),
+        ThingModel(title = "Зарядка для ноутбукаЗарядка для ноутбука"),
+        ThingModel(title = "Плавки")
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultThingViewHolder {
@@ -23,13 +27,13 @@ class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: DefaultThingViewHolder, position: Int) =
-        holder.onBind(listThings.get(position))
+        holder.onBind(listThings[position])
 
     override fun getItemCount() = listThings.size
 
-    fun getItems(): List<String> = listThings
+    fun getItems(): List<ThingModel> = listThings
 
-    fun updateData(list: List<String>) {
+    fun updateData(list: List<ThingModel>) {
         listThings.clear()
         listThings.addAll(list)
         notifyDataSetChanged()
