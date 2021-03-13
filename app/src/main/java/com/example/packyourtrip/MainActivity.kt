@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnAddThing: Button
     lateinit var btnChangeThing: Button
     lateinit var btnListener: Button
-    val trips = mutableListOf<TripModel>()
+    var trips = mutableListOf<TripModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         btnChangeThing = findViewById(R.id.btnChangeThing)
         btnListener = findViewById(R.id.btnListener)
         btnLoad.setOnClickListener {
-            loadTrips()
+
         }
         btnLogout.setOnClickListener {
             signOut()
@@ -62,38 +62,30 @@ class MainActivity : AppCompatActivity() {
         btnAddThing.setOnClickListener {
             val trip = trips[0]
             if (trip.id != null)
-            addThingToTrip(trip.id, ThingModel("NEW THING2", false))
+                addThingToTrip(trip.id, ThingModel("NEW THING2", false))
         }
         btnChangeThing.setOnClickListener {
             val trip = trips[0]
             trip.things[1].title = "EDITEDD!"
-            trip.things[3].isDone = true
+            trip.things[3].isDone = false
             if (trip != null)
-            changeThingToTrip(trip)
+                changeThingToTrip(trip)
         }
         btnListener.setOnClickListener {
-            startListener()
+
         }
     }
 
-    //Изменение в списке вещей
-    //Модель уже с внесенным изменением
-    private fun changeThingToTrip(trip: TripModel) {
-        db.collection("trips").document(trip.id!!)
-            .update("things",trip.things)
-    }
-
-    //Добавление вещи в поездку
-    private fun addThingToTrip(id: String, thingModel: ThingModel) {
-        db.collection("trips").document(id)
-            .update("things", FieldValue.arrayUnion(thingModel))
-            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
-            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    //Добавление записи поездки
+    private fun addTrip(tripModel: TripModel) {
+        db.collection("trips").add(tripModel)
+            .addOnSuccessListener { Log.d(TAG, "Successfully insert!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error insert document", e) }
     }
 
     //Редактирование поездки
     private fun changeTrip(tripModel: TripModel) {
-        if (tripModel.id != null)
+        if (tripModel.id != null) {
             db.collection("trips").document(tripModel.id)
                 .update(
                     mapOf(
@@ -105,55 +97,81 @@ class MainActivity : AppCompatActivity() {
                 )
                 .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
                 .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
-    }
-
-    // Добавление записи поездки
-    private fun addTrip() {
-        val currentUser = auth.currentUser
-        if (currentUser != null)
-            db.collection("trips").add(
-                TripModel(
-                    title = "new",
-                    things = mutableListOf(ThingModel("Passport23", false)),
-                    owner = mutableListOf(currentUser.email)
-                )
-            )
-    }
-
-    //Получение списка поездок доступных пользователю
-    private fun loadTrips() {
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            trips.clear()
-            db.collection("trips")
-                .whereArrayContains("owner", currentUser.email)
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        val trip = document.toObject(TripModel::class.java)
-                        trips.add(trip)
-                    }
-                    textView.text = trips.toString()
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
         }
     }
 
-    private fun startListener() {
-        //Слушатель изменений
-        val trip = trips[0]
-        val docRef = db.collection("trips").document(trip.id!!)
+    //Удаление поздки
+    private fun deleteTrip(tripId: String) {
+        db.collection("trips").document(tripId)
+            .delete()
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    }
+
+    //Получение списка поездок доступных пользователю
+    private fun loadTrips(userEmail: String) {
+        trips = mutableListOf<TripModel>()
+        db.collection("trips")
+            .whereArrayContains("owner", userEmail)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val trip = document.toObject(TripModel::class.java)
+                    trips.add(trip)
+                }
+                textView.text = trips.toString()
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
+    }
+
+    // Добавление пользователя в поездку
+    private fun addOwnerToTrip(tripId: String, email: String) {
+        db.collection("trips").document(tripId)
+            .update("owner", email)
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+
+    //Добавление вещи в поездку
+    private fun addThingToTrip(tripId: String, thingModel: ThingModel) {
+        db.collection("trips").document(tripId)
+            .update("things", FieldValue.arrayUnion(thingModel))
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+
+    //Изменение в списке вещей
+    //Модель уже с внесенным изменением
+    private fun changeThingToTrip(tripModel: TripModel) {
+        if (tripModel.id != null) {
+            db.collection("trips").document(tripModel.id)
+                .update("things", tripModel.things)
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+        }
+    }
+
+    //Удаление из списка вещей
+    private fun deleteThingToTrip(tripId: String, thingModel: ThingModel) {
+        db.collection("trips").document(tripId)
+            .update("things", FieldValue.arrayRemove(thingModel))
+    }
+
+    //Слушатель изменений в поездке
+    private fun startListener(tripId: String) {
+        val docRef = db.collection("trips").document(tripId)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e)
                 return@addSnapshotListener
             }
             if (snapshot != null && snapshot.exists()) {
-                for (querySnapshot in snapshot.data)
-                textView.text = snapshot.data
-                Log.d(TAG, "Current data: ${snapshot.data}")
+                val newTrip = snapshot.toObject(TripModel::class.java)
+                textView.text = newTrip.toString()
+                Log.d(TAG, "Current data: $newTrip")
             } else {
                 Log.d(TAG, "Current data: null")
             }
