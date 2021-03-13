@@ -7,5 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#3AC100</color>
+    <color name="yellow">#FFE600</color>
+    <color name="red">#FF0000</color>
+    <color name="violet">#9D00FF</color>
+
+    <color name="background_color">#fdf5e6</color>
+    <color name="primary_color">#fdd285</color>
+    <color name="light_sky_blue_color">#74d4de</color>
+    <color name="sky_blue_color">#55c9d7</color>
+    <color name="bright_primary_color">#fc8369</color>
     <color name="background">#DCD7D7</color>
 </resources>
