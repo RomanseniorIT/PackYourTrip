@@ -12,11 +12,7 @@ import com.example.packyourtrip.R
 import com.example.packyourtrip.ui.checklist.TripCheckListFragment
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TripCheckListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class ThingsCheckListFragment : Fragment(R.layout.fragment_thing_checklist) {
     private val spanCount = 5
     private lateinit var viewPager: ViewPager2
@@ -44,15 +40,6 @@ class ThingsCheckListFragment : Fragment(R.layout.fragment_thing_checklist) {
 
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TripCheckListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
             ThingsCheckListFragment()
