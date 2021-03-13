@@ -19,6 +19,11 @@
         android:id="@+id/mainFragment"
         android:name="com.example.packyourtrip.ui.main.MainFragment"
         android:label="MainFragment">
+
+        <action
+            android:id="@+id/action_mainFragment_to_tripCheckListFragment"
+            app:destination="@id/tripCheckListFragment" />
+
     </fragment>
 
     <fragment
@@ -26,9 +31,6 @@
         android:name="com.example.packyourtrip.ui.main.trip.TripFragment"
         android:label="TripFragment">
 
-        <action
-            android:id="@+id/action_tripFragment_to_tripCheckListFragment"
-            app:destination="@id/tripCheckListFragment" />
 
     </fragment>
 
@@ -39,7 +41,7 @@
 
         <argument
             android:name="trip_id"
-            app:argType="String"
+            app:argType="string"
             />
 
     </fragment>

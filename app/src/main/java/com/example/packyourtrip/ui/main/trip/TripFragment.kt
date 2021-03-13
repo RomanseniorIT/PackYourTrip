@@ -7,9 +7,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.ui.main.TripListener
 
 
-class TripFragment : Fragment(R.layout.fragment_trip) {
+class TripFragment : Fragment(R.layout.fragment_trip), TripListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +23,9 @@ class TripFragment : Fragment(R.layout.fragment_trip) {
     }
 
     private fun initRecycler(view: View) {
-        val recyclerThings: RecyclerView = view.findViewById(R.id.recycler_trips)
-        recyclerThings.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        recyclerThings.adapter = TripAdapter()
+        val recyclerTrips: RecyclerView = view.findViewById(R.id.recycler_trips)
+        recyclerTrips.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        recyclerTrips.adapter = TripAdapter(this)
 
 //        findNavController().navigate()
     }
@@ -34,5 +35,9 @@ class TripFragment : Fragment(R.layout.fragment_trip) {
         @JvmStatic
         fun newInstance() =
             TripFragment()
+    }
+
+    override fun itemClicked() {
+        findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
     }
 }

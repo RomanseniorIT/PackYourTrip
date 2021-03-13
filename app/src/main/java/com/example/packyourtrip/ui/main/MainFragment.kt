@@ -3,6 +3,7 @@ package com.example.packyourtrip.ui.main
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.example.packyourtrip.R
 import com.google.android.material.tabs.TabLayout
@@ -16,6 +17,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+        toolbar.inflateMenu(R.menu.menu_main)
+        activity?.setActionBar(toolbar)
         val mainFragmentAdapter = MainFragmentAdapter(this)
         val viewPager: ViewPager2 = view.findViewById(R.id.pager)
         viewPager.adapter = mainFragmentAdapter
