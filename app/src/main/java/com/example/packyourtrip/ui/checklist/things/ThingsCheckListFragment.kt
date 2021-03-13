@@ -12,9 +12,8 @@ import com.example.packyourtrip.R
 import com.example.packyourtrip.ui.checklist.TripCheckListFragment
 
 
-
 class ThingsCheckListFragment : Fragment(R.layout.fragment_thing_checklist) {
-    private val spanCount = 5
+    private val spanCount = 12
     private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +33,24 @@ class ThingsCheckListFragment : Fragment(R.layout.fragment_thing_checklist) {
         recyclerThings.adapter = ThingAdapter()
 
         val recyclerDefaultThings: RecyclerView = view.findViewById(R.id.recycler_default_things)
-        recyclerDefaultThings.layoutManager = GridLayoutManager(context, spanCount)
-        recyclerDefaultThings.adapter = DefaultThingAdapter()
+        val adapter = DefaultThingAdapter()
+        val layoutManager = GridLayoutManager(context, spanCount)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                val items = adapter.getItems()
+                val item = items.get(position)
+                val itemLength = item.length
+                return when {
+                    itemLength < 8 -> 2
+                    itemLength < 9 -> 3
+                    itemLength < 18 -> 4
+                    else -> 12
+                }
+            }
+        }
+        //recyclerDefaultThings.layoutManager = GridLayoutManager(context, spanCount)
+        recyclerDefaultThings.layoutManager = layoutManager
+        recyclerDefaultThings.adapter = adapter
     }
 
 

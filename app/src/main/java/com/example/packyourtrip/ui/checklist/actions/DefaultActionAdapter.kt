@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 
 class DefaultActionAdapter() : RecyclerView.Adapter<DefaultActionViewHolder>() {
-    private val listThings: MutableList<String> = mutableListOf(
-        "Стандартное Дело 1",
-        "Стандартное Дело 2",
-        "Стандартное Дело 3",
-        "Стандартное Дело 4"
+    private val listActions: MutableList<String> = mutableListOf(
+        "Выключить утюг",
+        "Выключить газ",
+        "Выключить воду",
+        "Выключить свет в комнатах",
+        "Оставить корм коту"
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultActionViewHolder {
@@ -21,13 +22,15 @@ class DefaultActionAdapter() : RecyclerView.Adapter<DefaultActionViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: DefaultActionViewHolder, position: Int) =
-        holder.onBind(listThings.get(position))
+        holder.onBind(listActions.get(position))
 
-    override fun getItemCount() = listThings.size
+    override fun getItemCount() = listActions.size
+
+    fun getItems(): List<String> = listActions
 
     fun updateData(list: List<String>) {
-        listThings.clear()
-        listThings.addAll(list)
+        listActions.clear()
+        listActions.addAll(list)
         notifyDataSetChanged()
     }
 }
