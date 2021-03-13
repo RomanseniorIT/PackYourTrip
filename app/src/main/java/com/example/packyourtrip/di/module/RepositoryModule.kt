@@ -2,6 +2,8 @@ package com.example.packyourtrip.di.module
 
 import com.example.packyourtrip.data.repository.auth.AuthRepository
 import com.example.packyourtrip.data.repository.auth.AuthRepositoryImpl
+import com.example.packyourtrip.data.repository.splash.SplashRepository
+import com.example.packyourtrip.data.repository.splash.SplashRepositoryImpl
 import com.example.packyourtrip.data.repository.trips.TripsRepository
 import com.example.packyourtrip.data.repository.trips.TripsRepositoryImpl
 import dagger.Module
@@ -14,6 +16,12 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun getTripsRepository(repository: TripsRepositoryImpl): TripsRepository {
+        return repository
+    }
+
+    @Singleton
+    @Provides
+    fun getSplashRepository(repository: SplashRepositoryImpl): SplashRepository {
         return repository
     }
 
