@@ -84,6 +84,6 @@ class TripFragment : DaggerFragment(), TripListener {
 
     override fun saveBtnClicked(tripName: String, city: String, date: String) {
         tripViewModel.addTrip(TripModel(title = tripName, city = city, dateFrom = 100000))
-        findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
+        //findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
     }
 }
