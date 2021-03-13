@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.packyourtrip.ui.splash.SplashFragment"
+        android:label="SplashFragment">
+
+        <action
+            android:id="@+id/action_splashFragment_to_tripCheckListFragment"
+            app:destination="@id/tripCheckListFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/tripCheckListFragment"
+        android:name="com.example.packyourtrip.ui.checklist.TripCheckListFragment"
+        android:label="TripCheckListFragment"/>
+
+</navigation>
