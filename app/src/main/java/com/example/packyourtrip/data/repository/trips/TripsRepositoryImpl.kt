@@ -96,15 +96,15 @@ class TripsRepositoryImpl @Inject constructor(
 
     //Слушатель изменений в поездке
     override suspend fun getTripById(tripId: String, userEmail: String): TripModel? {
-        var trip: TripModel? = null
+        val trips = mutableListOf<TripModel>()
         withContext(Dispatchers.IO) {
             db.collection("trips")
                 .whereArrayContains("owner", userEmail)
-                .whereEqualTo("id", tripId)
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        trip = document.toObject(TripModel::class.java)
+                        val trip = document.toObject(TripModel::class.java)
+                        trips.add(trip)
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -112,7 +112,7 @@ class TripsRepositoryImpl @Inject constructor(
                 }
                 .await()
         }
-        return trip
+        return trips.find { it.id == tripId }
     }
 
     // Добавление пользователя в поездку

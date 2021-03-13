@@ -14,7 +14,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_things"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_add_thing"
@@ -27,7 +29,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_default_things"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingEnd="16dp"/>
 
     </LinearLayout>
 
