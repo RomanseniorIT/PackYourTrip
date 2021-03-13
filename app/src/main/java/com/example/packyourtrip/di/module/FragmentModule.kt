@@ -1,6 +1,7 @@
 package com.example.packyourtrip.di.module
 
 import com.example.packyourtrip.ui.auth.AuthFragment
+import com.example.packyourtrip.ui.checklist.TripCheckListFragment
 import com.example.packyourtrip.ui.checklist.actions.LeaveCheckListFragment
 import com.example.packyourtrip.ui.checklist.things.ThingsCheckListFragment
 import com.example.packyourtrip.ui.main.trip.TripFragment
@@ -22,6 +23,9 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun bindLeaveCheckListFragment(): LeaveCheckListFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTripCheckListFragment(): TripCheckListFragment
 
     @ContributesAndroidInjector
     abstract fun bindTripFragment(): TripFragment

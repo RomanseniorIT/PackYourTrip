@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 import com.example.packyourtrip.injectViewModel
+import com.example.packyourtrip.ui.main.MainFragmentDirections
 import com.example.packyourtrip.ui.dialog.CreateTripDialog
 import com.example.packyourtrip.ui.main.TripListener
 import dagger.android.support.DaggerFragment
@@ -38,6 +39,9 @@ class TripFragment : DaggerFragment(), TripListener {
         super.onViewCreated(view, savedInstanceState)
         init()
         initRecycler(view)
+        tripViewModel.tripList.observe(viewLifecycleOwner) { trips ->
+            tripAdapter.bindTrips(trips)
+        }
     }
 
     override fun onResume() {
@@ -54,6 +58,10 @@ class TripFragment : DaggerFragment(), TripListener {
 //        findNavController().navigate()
     }
 
+    private fun init() {
+        tripViewModel = injectViewModel(viewModelFactory)
+    }
+
     companion object {
 
         @JvmStatic
@@ -61,8 +69,10 @@ class TripFragment : DaggerFragment(), TripListener {
             TripFragment()
     }
 
-    override fun itemClicked() {
-        findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
+    override fun itemClicked(tripId: String) {
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToTripCheckListFragment(tripId)
+        )
     }
 
     override fun saveBtnClicked() {
