@@ -4,7 +4,9 @@ import android.util.Log
 import com.example.packyourtrip.data.model.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TripsRepositoryImpl @Inject constructor(
@@ -52,19 +54,21 @@ class TripsRepositoryImpl @Inject constructor(
     //Получение списка поездок доступных пользователю
     override suspend fun loadTrips(userEmail: String): List<TripModel> {
         val trips = mutableListOf<TripModel>()
-        db.collection("trips")
-            .whereArrayContains("owner", userEmail)
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val trip = document.toObject(TripModel::class.java)
-                    trips.add(trip)
+        withContext(Dispatchers.IO) {
+            db.collection("trips")
+                .whereArrayContains("owner", userEmail)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val trip = document.toObject(TripModel::class.java)
+                        trips.add(trip)
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-            .await()
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+                .await()
+        }
         return trips
     }
 
@@ -93,19 +97,21 @@ class TripsRepositoryImpl @Inject constructor(
     //Слушатель изменений в поездке
     override suspend fun getTripById(tripId: String, userEmail: String): TripModel? {
         var trip: TripModel? = null
-        db.collection("trips")
-            .whereArrayContains("owner", userEmail)
-            .whereEqualTo("id", tripId)
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    trip = document.toObject(TripModel::class.java)
+        withContext(Dispatchers.IO) {
+            db.collection("trips")
+                .whereArrayContains("owner", userEmail)
+                .whereEqualTo("id", tripId)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        trip = document.toObject(TripModel::class.java)
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-            .await()
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+                .await()
+        }
         return trip
     }
 

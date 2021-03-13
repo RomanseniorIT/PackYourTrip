@@ -4,7 +4,9 @@ import android.util.Log
 import com.example.packyourtrip.data.model.SavedThingsModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SavedThingRepositoryImpl @Inject constructor(
@@ -50,21 +52,22 @@ class SavedThingRepositoryImpl @Inject constructor(
     //Получение списков сохраеннных вещей доступных пользователю
     override suspend fun loadSavedThings(userEmail: String): List<SavedThingsModel> {
         val savedThingsList = mutableListOf<SavedThingsModel>()
-        db.collection("savedThings")
-            .whereArrayContains("owner", userEmail)
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val savedList = document.toObject(SavedThingsModel::class.java)
-                    savedThingsList.add(savedList)
+        withContext(Dispatchers.IO) {
+            db.collection("savedThings")
+                .whereArrayContains("owner", userEmail)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val savedList = document.toObject(SavedThingsModel::class.java)
+                        savedThingsList.add(savedList)
+                    }
+
                 }
-
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-            .await()
-
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+                .await()
+        }
         return savedThingsList
     }
 
