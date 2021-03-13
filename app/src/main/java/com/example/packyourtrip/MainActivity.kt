@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.packyourtrip.data.model.SavedThingsModel
 import com.example.packyourtrip.data.model.ThingModel
+import com.example.packyourtrip.data.model.ToDoModel
 import com.example.packyourtrip.data.model.TripModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -160,6 +161,33 @@ class MainActivity : AppCompatActivity() {
         db.collection("trips").document(tripId)
             .update("things", FieldValue.arrayRemove(thingModel))
     }
+
+
+    //Добавление дел в поездку
+    private fun addToDoToTrip(tripId: String, toDoModel: ToDoModel) {
+        db.collection("trips").document(tripId)
+            .update("toDos", FieldValue.arrayUnion(toDoModel))
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+
+    //Изменение в списке дел
+    //Модель уже с внесенным изменением
+    private fun changeToDoToTrip(tripModel: TripModel) {
+        if (tripModel.id != null) {
+            db.collection("trips").document(tripModel.id)
+                .update("toDos", tripModel.toDos)
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+        }
+    }
+
+    //Удаление из списка вещей
+    private fun deleteToDoToTrip(tripId: String, toDoModel: ToDoModel) {
+        db.collection("trips").document(tripId)
+            .update("toDos", FieldValue.arrayRemove(toDoModel))
+    }
+
 
     //Слушатель изменений в поездке
     private fun startListener(tripId: String) {
