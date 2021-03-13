@@ -1,20 +1,14 @@
 package com.example.packyourtrip.ui.main.trip
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 
 
 class TripFragment : Fragment(R.layout.fragment_trip) {
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,8 +1,10 @@
 package com.example.packyourtrip.data.repository.auth
 
+import android.content.Intent
+
 interface AuthRepository {
 
-    suspend fun isUserLoggedIn(): Boolean
+    fun signIn(): Intent
 
-    suspend fun logOut()
+    suspend fun signOut(): Boolean
 }
