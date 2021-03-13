@@ -40,6 +40,11 @@ class TripFragment : DaggerFragment(), TripListener {
         tripViewModel.loadTrips()
     }
 
+    override fun onResume() {
+        super.onResume()
+        tripViewModel.loadTrips()
+    }
+
     private fun initRecycler(view: View) {
         val recyclerTrips: RecyclerView = view.findViewById(R.id.recycler_trips)
         recyclerTrips.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
