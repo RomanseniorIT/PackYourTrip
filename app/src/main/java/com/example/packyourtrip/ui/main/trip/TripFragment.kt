@@ -6,14 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 import com.example.packyourtrip.injectViewModel
 import com.example.packyourtrip.ui.main.MainFragmentDirections
+import com.example.packyourtrip.ui.dialog.CreateTripDialog
 import com.example.packyourtrip.ui.main.TripListener
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class TripFragment : DaggerFragment(), TripListener {
@@ -38,6 +42,10 @@ class TripFragment : DaggerFragment(), TripListener {
         tripViewModel.tripList.observe(viewLifecycleOwner) { trips ->
             tripAdapter.bindTrips(trips)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
         tripViewModel.loadTrips()
     }
 
@@ -65,5 +73,9 @@ class TripFragment : DaggerFragment(), TripListener {
         findNavController().navigate(
             MainFragmentDirections.actionMainFragmentToTripCheckListFragment(tripId)
         )
+    }
+
+    override fun saveBtnClicked() {
+        findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
     }
 }
