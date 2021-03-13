@@ -1,7 +1,7 @@
 package com.example.packyourtrip.data.model
 
 data class ThingModel(
-    val title: String? = null,
+    var title: String? = null,
     @field:JvmField
-    val isDone: Boolean? = null
+    var isDone: Boolean? = null
 )
