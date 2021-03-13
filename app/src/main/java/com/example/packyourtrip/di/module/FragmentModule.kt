@@ -3,6 +3,7 @@ package com.example.packyourtrip.di.module
 import com.example.packyourtrip.ui.auth.AuthFragment
 import com.example.packyourtrip.ui.checklist.actions.LeaveCheckListFragment
 import com.example.packyourtrip.ui.checklist.things.ThingsCheckListFragment
+import com.example.packyourtrip.ui.main.defaultlists.SavedListsFragment
 import com.example.packyourtrip.ui.main.trip.TripFragment
 import com.example.packyourtrip.ui.splash.SplashFragment
 import dagger.Module
@@ -25,4 +26,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun bindTripFragment(): TripFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSavedListsFragment(): SavedListsFragment
 }

@@ -3,6 +3,7 @@ package com.example.packyourtrip.di.module
 import androidx.lifecycle.ViewModel
 import com.example.packyourtrip.di.annotation.ViewModelKey
 import com.example.packyourtrip.ui.auth.AuthViewModel
+import com.example.packyourtrip.ui.main.defaultlists.SavedListsViewModel
 import com.example.packyourtrip.ui.main.trip.TripViewModel
 import com.example.packyourtrip.ui.splash.SplashViewModel
 import dagger.Binds
@@ -26,4 +27,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TripViewModel::class)
     abstract fun tripViewModel(viewModel: TripViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SavedListsViewModel::class)
+    abstract fun savedListsViewModel(viewModel: SavedListsViewModel): ViewModel
 }
