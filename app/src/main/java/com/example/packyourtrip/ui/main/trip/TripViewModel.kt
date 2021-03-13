@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.data.repository.splash.SplashRepository
 import com.example.packyourtrip.data.repository.trips.TripsRepository
-import kotlinx.coroutines.Dispatchers
+import com.example.packyourtrip.utils.MainPrefs
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,9 +20,9 @@ class TripViewModel @Inject constructor(
     val tripList: LiveData<List<TripModel>> get() = _tripList
 
     fun loadTrips() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val email = splashRepository.getCurrentUser()?.email
-            if (email != null) {
+        viewModelScope.launch {
+            val email = MainPrefs.userEmail
+            if (email.isNotEmpty()) {
                 _tripList.value = tripRepository.loadTrips(email)
             }
         }

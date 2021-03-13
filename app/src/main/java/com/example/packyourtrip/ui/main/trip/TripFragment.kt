@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,11 +33,11 @@ class TripFragment : DaggerFragment(), TripListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-           initRecycler(view)
-          tripViewModel.tripList.observe(viewLifecycleOwner) {
-              tripAdapter
-          }
-          tripViewModel.loadTrips()
+        initRecycler(view)
+        tripViewModel.tripList.observe(viewLifecycleOwner) { trips ->
+            tripAdapter.bindTrips(trips)
+        }
+        tripViewModel.loadTrips()
     }
 
     private fun initRecycler(view: View) {
