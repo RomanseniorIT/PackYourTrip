@@ -6,7 +6,7 @@ data class TripModel(
     @DocumentId
     val id: String? = null,
     var title: String? = null,
-    var dateFrom: String? = null,
+    var dateFrom: Long? = null,
     var dateTo: String? = null,
     var city: String? = null,
     val things: MutableList<ThingModel> = mutableListOf(),

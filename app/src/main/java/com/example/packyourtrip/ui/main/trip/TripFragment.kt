@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.injectViewModel
+import com.example.packyourtrip.ui.TripDiffUtil
 import com.example.packyourtrip.ui.main.MainFragmentDirections
 import com.example.packyourtrip.ui.dialog.CreateTripDialog
 import com.example.packyourtrip.ui.main.TripListener
@@ -43,7 +45,10 @@ class TripFragment : DaggerFragment(), TripListener {
         val fabBtn: FloatingActionButton = view.findViewById(R.id.btn_add_trip)
         fabBtn.setOnClickListener { onClickFabBtn() }
         tripViewModel.tripList.observe(viewLifecycleOwner) { trips ->
+            val tripDiffUtil = TripDiffUtil(tripAdapter.getTrips(), trips)
+            val tripDiffResult = DiffUtil.calculateDiff(tripDiffUtil)
             tripAdapter.bindTrips(trips)
+            tripDiffResult.dispatchUpdatesTo(tripAdapter)
         }
     }
 
@@ -84,6 +89,5 @@ class TripFragment : DaggerFragment(), TripListener {
 
     override fun saveBtnClicked(tripName: String, city: String, date: String) {
         tripViewModel.addTrip(TripModel(title = tripName, city = city, dateFrom = 100000))
-        //findNavController().navigate(R.id.action_mainFragment_to_tripCheckListFragment)
     }
 }
