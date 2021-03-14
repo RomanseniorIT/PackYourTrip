@@ -19,10 +19,12 @@ class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
         ThingModel(title = "Плавки")
     )
 
+    private var callback: Callback? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultThingViewHolder {
         return DefaultThingViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_holder_default_things, parent, false)
+                .inflate(R.layout.view_holder_default_things, parent, false), callback
         )
     }
 
@@ -37,5 +39,15 @@ class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
         listThings.clear()
         listThings.addAll(list)
         notifyDataSetChanged()
+    }
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
+    }
+
+    interface Callback {
+
+        fun addDefault(thingModel: ThingModel)
+
     }
 }

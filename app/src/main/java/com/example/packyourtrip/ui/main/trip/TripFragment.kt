@@ -62,8 +62,6 @@ class TripFragment : DaggerFragment(), TripListener {
         recyclerTrips.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         tripAdapter = TripAdapter(this)
         recyclerTrips.adapter = tripAdapter
-
-//        findNavController().navigate()
     }
 
     private fun init() {
