@@ -112,7 +112,9 @@ class TripsRepositoryImpl @Inject constructor(
                 }
                 .await()
         }
-        return trips.find { it.id == tripId }
+        val trip = trips.find { it.id == tripId }
+        trip?.things?.sortBy { it.title }
+        return trip
     }
 
     // Добавление пользователя в поездку

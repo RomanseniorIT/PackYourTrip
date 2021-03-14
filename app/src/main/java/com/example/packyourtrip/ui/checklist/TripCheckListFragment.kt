@@ -5,27 +5,22 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toolbar
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.example.packyourtrip.R
-import com.example.packyourtrip.databinding.FragmentThingChecklistBinding
 import com.example.packyourtrip.databinding.FragmentTripChecklistBinding
 import com.example.packyourtrip.injectViewModel
-import com.example.packyourtrip.ui.checklist.things.TripCheckListViewModel
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist) {
+class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist), ShareDialog.Callback {
     private lateinit var tripCheckListFragmentAdapter: TripCheckListFragmentAdapter
     private var _binding: FragmentTripChecklistBinding? = null
     private val binding get() = _binding!!
-    private var tripId: String? = null
+    private var tripId: String = ""
+    private val shareTitle = getString(R.string.action_share)
+    private val saveTitle = getString(R.string.action_save)
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -35,42 +30,58 @@ class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist)
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTripChecklistBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        init()
+        initView()
+
+        viewModel.getTrip(tripId)
+
+    }
+
+    private fun init() {
         viewModel = injectViewModel(viewModelFactory)
         tripId = arguments?.getString(TRIP_ID) ?: ""
-        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-        toolbar.inflateMenu(R.menu.menu_checklist)
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_white_24dp)
-        activity?.setActionBar(toolbar)
-        toolbar.setNavigationOnClickListener { onClickNavigation() }
+        tripCheckListFragmentAdapter = TripCheckListFragmentAdapter(this)
+    }
+
+    private fun initView() {
+        binding.toolbar.inflateMenu(R.menu.menu_checklist)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_white_24dp)
+        activity?.setActionBar(binding.toolbar)
+        binding.toolbar.setNavigationOnClickListener { onClickNavigation() }
         setHasOptionsMenu(true)
 
-        tripCheckListFragmentAdapter = TripCheckListFragmentAdapter(this)
-
         binding.pager.adapter = tripCheckListFragmentAdapter
+        binding.pager.isUserInputEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Вещи"
                 1 -> tab.text = "Дела"
             }
         }.attach()
-
-        tripId?.let {
-            viewModel.getTrip(it)
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+        when (item.title) {
+            shareTitle -> startShareDialog()
+            saveTitle -> findNavController().popBackStack()
+        }
+        return true
     }
 
     private fun onClickNavigation() {
         findNavController().popBackStack()
+    }
+
+    private fun startShareDialog(){
+        val shareDialog = ShareDialog()
+        shareDialog.setCallback(this)
+        shareDialog.show(parentFragmentManager, "ShareDialog")
     }
 
     companion object {
@@ -78,5 +89,9 @@ class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist)
         @JvmStatic
         fun newInstance() =
             TripCheckListFragment()
+    }
+
+    override fun share(email: String) {
+        viewModel.shareTrip(tripId, email)
     }
 }

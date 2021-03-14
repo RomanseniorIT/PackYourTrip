@@ -1,9 +1,10 @@
-package com.example.packyourtrip.ui.checklist.things
+package com.example.packyourtrip.ui.checklist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.packyourtrip.data.model.ThingModel
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.data.repository.things.ThingsRepository
 import com.example.packyourtrip.data.repository.trips.TripsRepository
@@ -31,5 +32,13 @@ class TripCheckListViewModel @Inject constructor(
 
     fun changeThingToTrip(tripModel: TripModel){
         thingsRepository.changeThingToTrip(tripModel)
+    }
+
+    fun deleteThing(tripId: String, thingModel: ThingModel) {
+        thingsRepository.deleteThingToTrip(tripId, thingModel)
+    }
+
+    fun shareTrip(tripId: String, email: String) {
+        tripsRepository.addOwnerToTrip(tripId, email)
     }
 }

@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.data.Mapper
 import com.example.packyourtrip.data.model.ThingModel
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.databinding.FragmentThingChecklistBinding
 import com.example.packyourtrip.ui.checklist.TripCheckListFragment
+import com.example.packyourtrip.ui.checklist.TripCheckListViewModel
 import dagger.android.support.DaggerFragment
 
 class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist), CreateThingDialog.Callback, ThingAdapter.Callback {
@@ -99,6 +101,11 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
     }
 
     override fun checkThing(thingModel: ThingModel) {
+        tripModel = Mapper.editTripModel(thingModel, tripModel)
+        viewModel.changeThingToTrip(tripModel)
     }
 
+    override fun delete(thingModel: ThingModel) {
+        viewModel.deleteThing(tripId, thingModel)
+    }
 }
