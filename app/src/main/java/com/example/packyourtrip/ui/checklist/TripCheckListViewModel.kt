@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.packyourtrip.data.model.ThingModel
+import com.example.packyourtrip.data.model.ToDoModel
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.data.repository.things.ThingsRepository
 import com.example.packyourtrip.data.repository.trips.TripsRepository
@@ -22,10 +23,23 @@ class TripCheckListViewModel @Inject constructor(
     private val _tripModel = MutableLiveData<TripModel>()
     val tripModel: LiveData<TripModel> get() = _tripModel
 
+    private val _defThings = MutableLiveData<List<ThingModel>>()
+    val defThings: LiveData<List<ThingModel>> get() = _defThings
+
+    private val _defActions = MutableLiveData<List<ToDoModel>>()
+    val defActions: LiveData<List<ToDoModel>> get() = _defActions
+
     fun getTrip(tripId: String) {
         viewModelScope.launch {
             _tripModel.value = tripsRepository.getTripById(tripId, MainPrefs.userEmail)
             startTripListener(tripId)
+        }
+    }
+
+    fun getDefaultList() {
+        viewModelScope.launch {
+            _defThings.value = tripsRepository.getDefaultThing().things
+            _defActions.value = tripsRepository.getDefaultThing().toDos
         }
     }
 

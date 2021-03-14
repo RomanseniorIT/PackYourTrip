@@ -49,6 +49,7 @@ class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist)
         init()
         initView()
 
+        viewModel.getDefaultList()
         viewModel.getTrip(tripId)
         startTripListener()
     }
