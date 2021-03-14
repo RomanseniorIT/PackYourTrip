@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.packyourtrip.R
 import com.example.packyourtrip.data.model.TripModel
-import com.example.packyourtrip.data.model.TripModel
-import com.example.packyourtrip.databinding.FragmentThingChecklistBinding
 import com.example.packyourtrip.databinding.FragmentTripChecklistBinding
 import com.example.packyourtrip.injectViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,8 +24,8 @@ class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist)
     private var _binding: FragmentTripChecklistBinding? = null
     private val binding get() = _binding!!
     private var tripId: String = ""
-    private val shareTitle = getString(R.string.action_share)
-    private val saveTitle = getString(R.string.action_save)
+    private var shareTitle = ""
+    private var saveTitle = ""
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -58,6 +57,8 @@ class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist)
         viewModel = injectViewModel(viewModelFactory)
         tripId = arguments?.getString(TRIP_ID) ?: ""
         tripCheckListFragmentAdapter = TripCheckListFragmentAdapter(this)
+        shareTitle = getString(R.string.action_share)
+        saveTitle = getString(R.string.action_save)
     }
 
     private fun initView() {
@@ -78,13 +79,13 @@ class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist)
 
     private fun startTripListener() {
         var trip: TripModel? = null
-        val query = db.collection("trips").document(tripId!!)
+        val query = db.collection("trips").document(tripId)
         registration = query.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener
             }
             if (snapshot != null && snapshot.exists()) {
-                viewModel.getTrip(tripId!!)
+                viewModel.getTrip(tripId)
             } else {
                 Log.d("TAG", "Current data: null")
             }
