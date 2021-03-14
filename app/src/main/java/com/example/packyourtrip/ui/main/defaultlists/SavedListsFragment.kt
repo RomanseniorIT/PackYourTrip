@@ -5,21 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.injectViewModel
-import com.example.packyourtrip.ui.main.MainFragmentDirections
 import com.example.packyourtrip.ui.main.TripListener
-import com.example.packyourtrip.ui.main.trip.CreateTripDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 
-class SavedListsFragment : DaggerFragment(), TripListener {
+class SavedListsFragment : DaggerFragment(), TripListener, SavedListsAdapter.Callback {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -50,6 +47,7 @@ class SavedListsFragment : DaggerFragment(), TripListener {
         val recyclerTrips: RecyclerView = view.findViewById(R.id.recycler_saved_list)
         recyclerTrips.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         savedListsAdapter = SavedListsAdapter(this)
+        savedListsAdapter.setCallback(this)
         recyclerTrips.adapter = savedListsAdapter
     }
 
@@ -63,7 +61,7 @@ class SavedListsFragment : DaggerFragment(), TripListener {
 
 
     override fun itemClicked(tripId: String) {
-      
+
     }
 
     override fun saveBtnClicked(name: String, city: String, date: String) {
@@ -77,4 +75,7 @@ class SavedListsFragment : DaggerFragment(), TripListener {
             SavedListsFragment()
     }
 
+    override fun delete(trip: TripModel) {
+        savedListsViewModel.deleteSavedThings(trip)
+    }
 }
