@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +15,9 @@ import com.example.packyourtrip.injectViewModel
 import com.example.packyourtrip.ui.TripDiffUtil
 import com.example.packyourtrip.ui.main.MainFragmentDirections
 import com.example.packyourtrip.ui.main.TripListener
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TripFragment : DaggerFragment(), TripListener {
 
