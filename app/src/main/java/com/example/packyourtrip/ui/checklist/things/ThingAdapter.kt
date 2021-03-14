@@ -22,7 +22,6 @@ class ThingAdapter() : RecyclerView.Adapter<ThingViewHolder>() {
 
     override fun getItemCount(): Int = listThings.size
 
-
     fun updateData(list: List<ThingModel>) {
         listThings.clear()
         listThings.addAll(list)
@@ -35,5 +34,7 @@ class ThingAdapter() : RecyclerView.Adapter<ThingViewHolder>() {
 
     interface Callback {
         fun checkThing(thingModel: ThingModel)
+
+        fun delete(thingModel: ThingModel)
     }
 }
