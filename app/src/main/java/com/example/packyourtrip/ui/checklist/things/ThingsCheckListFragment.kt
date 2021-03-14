@@ -16,7 +16,9 @@ import com.example.packyourtrip.ui.checklist.TripCheckListFragment
 import com.example.packyourtrip.ui.checklist.TripCheckListViewModel
 import dagger.android.support.DaggerFragment
 
-class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist), CreateThingDialog.Callback, ThingAdapter.Callback {
+class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist),
+    CreateThingDialog.Callback, ThingAdapter.Callback, DefaultThingAdapter.Callback {
+
     private val spanCount = 12
     private var tripId: String = ""
     private var _binding: FragmentThingChecklistBinding? = null
@@ -74,6 +76,11 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
             tripModel = it
             tripId = it.id ?: ""
             thingAdapter.updateData(it.things)
+            defaultThingAdapter.syncWithCheckList(it.things)
+        })
+
+        viewModel.defThings.observe(viewLifecycleOwner, {
+            defaultThingAdapter.setData(it)
         })
     }
 
@@ -81,7 +88,9 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
         viewModel = (parentFragment as TripCheckListFragment).viewModel
         thingAdapter = ThingAdapter()
         thingAdapter.setCallback(this)
+
         defaultThingAdapter = DefaultThingAdapter()
+        defaultThingAdapter.setCallback(this)
 
         binding.btnAddThing.setOnClickListener {
             val createThingDialog = CreateThingDialog()
@@ -107,5 +116,9 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
 
     override fun delete(thingModel: ThingModel) {
         viewModel.deleteThing(tripId, thingModel)
+    }
+
+    override fun addDefault(thingModel: ThingModel) {
+        viewModel.addThing(tripId, thingModel.title!!)
     }
 }
