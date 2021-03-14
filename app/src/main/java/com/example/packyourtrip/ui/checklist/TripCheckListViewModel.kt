@@ -1,5 +1,6 @@
 package com.example.packyourtrip.ui.checklist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.data.repository.things.ThingsRepository
 import com.example.packyourtrip.data.repository.trips.TripsRepository
 import com.example.packyourtrip.utils.MainPrefs
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +25,7 @@ class TripCheckListViewModel @Inject constructor(
     fun getTrip(tripId: String) {
         viewModelScope.launch {
             _tripModel.value = tripsRepository.getTripById(tripId, MainPrefs.userEmail)
+            startTripListener(tripId)
         }
     }
 
@@ -30,7 +33,7 @@ class TripCheckListViewModel @Inject constructor(
         thingsRepository.addThingToTrip(tripId, thing)
     }
 
-    fun changeThingToTrip(tripModel: TripModel){
+    fun changeThingToTrip(tripModel: TripModel) {
         thingsRepository.changeThingToTrip(tripModel)
     }
 
@@ -40,5 +43,27 @@ class TripCheckListViewModel @Inject constructor(
 
     fun shareTrip(tripId: String, email: String) {
         tripsRepository.addOwnerToTrip(tripId, email)
+    }
+
+    fun startTripListener(tripId: String) {
+        viewModelScope.launch {
+            try {
+                val trip = tripsRepository.startTripListener(tripId).first()
+
+                if (trip != null) _tripModel.value =
+                    tripsRepository.startTripListener(tripId).first()//.asLiveData()
+            } catch (e: NoSuchElementException) {
+                Log.d("TAG", "startTripListener: $e ")
+            }
+        }
+    }
+
+    fun stopTripListener() {
+        tripsRepository.stopTripListener()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopTripListener()
     }
 }

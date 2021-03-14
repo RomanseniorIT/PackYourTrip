@@ -1,10 +1,14 @@
 package com.example.packyourtrip.data.repository.trips
 
 import android.util.Log
-import com.example.packyourtrip.data.model.*
+import com.example.packyourtrip.data.model.TripModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -73,8 +77,9 @@ class TripsRepositoryImpl @Inject constructor(
     }
 
     //Слушатель изменений в поездке
-    override fun startTripListener(tripId: String): TripModel? {
-        var trip: TripModel? = null
+    @ExperimentalCoroutinesApi
+    override fun startTripListener(tripId: String): Flow<TripModel> =
+/*        var trip: TripModel? = null
         val query = db.collection("trips").document(tripId)
         registration = query.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -86,9 +91,27 @@ class TripsRepositoryImpl @Inject constructor(
             } else {
                 Log.d(TAG, "Current data: null")
             }
+        }*/
+    // return trip
+        //flowViaChannel
+        channelFlow<TripModel> {// channel -
+            // >
+            var trip: TripModel? = null
+            val query = db.collection("trips").document(tripId)
+            registration = query.addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                } else {
+                    if (snapshot != null && snapshot.exists()) {
+                        trip = snapshot.toObject(TripModel::class.java)
+                        launch {
+                            // if (trip != null)
+                            send(trip!!)
+                        }
+                    }
+                }
+            }
         }
-        return trip
-    }
+
 
     override fun stopTripListener() {
         registration?.remove()
