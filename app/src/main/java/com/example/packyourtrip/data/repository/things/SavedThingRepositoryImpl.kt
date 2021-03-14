@@ -1,8 +1,7 @@
 package com.example.packyourtrip.data.repository.things
 
 import android.util.Log
-import com.example.packyourtrip.data.model.SavedThingsModel
-import com.google.firebase.firestore.FieldValue
+import com.example.packyourtrip.data.model.TripModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -13,68 +12,90 @@ class SavedThingRepositoryImpl @Inject constructor(
     private val db: FirebaseFirestore
 ) : SavedThingRepository {
 
-    //Добавление списка сохраненных вещей
-    override fun addSavedThings(savedThingsModel: SavedThingsModel) {
-        db.collection("savedThings").add(savedThingsModel)
+    //Добавление записи поездки
+    override fun addSavedList(tripModel: TripModel) {
+        db.collection("savedThings").add(tripModel)
             .addOnSuccessListener { Log.d(TAG, "Successfully insert!") }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error insert document", e)
-            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error insert document", e) }
     }
 
-    //Добавление вещей в список сохраненных
-    override fun addThingToSaved(savedThingsListId: String, thing: String) {
-        db.collection("savedThings").document(savedThingsListId)
-            .update("things", FieldValue.arrayUnion(thing))
-            .addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot successfully updated!")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error updating document", e)
-            }
-    }
-
-    //Изменение в списке вещей
-    //Модель уже с внесенным изменением
-    override fun changeSavedThings(savedThingsModel: SavedThingsModel) {
-        if (savedThingsModel.id != null) {
-            db.collection("savedThings").document(savedThingsModel.id)
-                .update("things", savedThingsModel.things)
+    //Редактирование поездки
+    override fun changeSavedList(tripModel: TripModel) {
+        if (tripModel.id != null) {
+            db.collection("savedThings").document(tripModel.id)
+                .update(
+                    mapOf(
+                        "title" to tripModel.title,
+                    )
+                )
                 .addOnSuccessListener {
                     Log.d(TAG, "DocumentSnapshot successfully updated!")
                 }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error updating document", e)
-                }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
         }
     }
 
-    //Получение списков сохраеннных вещей доступных пользователю
-    override suspend fun loadSavedThings(userEmail: String): List<SavedThingsModel> {
-        val savedThingsList = mutableListOf<SavedThingsModel>()
+    //Удаление поздки
+    override fun deleteSavedList(tripId: String) {
+        db.collection("savedThings").document(tripId)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot successfully deleted!")
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    }
+
+    //Получение списка поездок доступных пользователю
+    override suspend fun loadSavedList(userEmail: String): List<TripModel> {
+        val trips = mutableListOf<TripModel>()
         withContext(Dispatchers.IO) {
             db.collection("savedThings")
                 .whereArrayContains("owner", userEmail)
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        val savedList = document.toObject(SavedThingsModel::class.java)
-                        savedThingsList.add(savedList)
+                        val trip = document.toObject(TripModel::class.java)
+                        trips.add(trip)
                     }
-
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
                 }
                 .await()
         }
-        return savedThingsList
+        return trips
     }
 
-    //Удаление из списка вещей
-    override fun deleteSavedThings(savedThingsListId: String, thing: String) {
-        db.collection("savedThings").document(savedThingsListId)
-            .update("things", FieldValue.arrayRemove(thing))
+
+    //Слушатель изменений в поездке
+    override suspend fun getSavedListById(tripId: String, userEmail: String): TripModel? {
+        val trips = mutableListOf<TripModel>()
+        withContext(Dispatchers.IO) {
+            db.collection("savedThings")
+                .whereArrayContains("owner", userEmail)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val trip = document.toObject(TripModel::class.java)
+                        trips.add(trip)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+                .await()
+        }
+        return trips.find { it.id == tripId }
+    }
+
+    // Добавление пользователя в поездку
+    override fun addOwnerToSavedList(tripId: String, email: String) {
+        db.collection("savedThings").document(tripId)
+            .update("owner", email)
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
     }
 
     companion object {

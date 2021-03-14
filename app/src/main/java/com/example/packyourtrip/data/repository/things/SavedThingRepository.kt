@@ -1,11 +1,14 @@
 package com.example.packyourtrip.data.repository.things
 
-import com.example.packyourtrip.data.model.SavedThingsModel
+import com.example.packyourtrip.data.model.TripModel
 
 interface SavedThingRepository {
-    fun addSavedThings(savedThingsModel: SavedThingsModel)
-    fun addThingToSaved(savedThingsListId: String, thing: String)
-    fun changeSavedThings(savedThingsModel: SavedThingsModel)
-    suspend fun loadSavedThings(userEmail: String): List<SavedThingsModel>?
-    fun deleteSavedThings(savedThingsListId: String, thing: String)
+    fun addSavedList(tripModel: TripModel)
+    fun changeSavedList(tripModel: TripModel)
+    fun deleteSavedList(tripId: String)
+    suspend fun loadSavedList(userEmail: String): List<TripModel>
+    fun addOwnerToSavedList(tripId: String, email: String)
+    suspend fun getSavedListById(tripId: String, userEmail: String): TripModel?
+
+
 }
