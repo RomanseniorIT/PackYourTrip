@@ -1,10 +1,11 @@
-package com.example.packyourtrip.ui.checklist.things
+package com.example.packyourtrip.ui.checklist
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.packyourtrip.data.model.ThingModel
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.data.repository.things.ThingsRepository
 import com.example.packyourtrip.data.repository.trips.TripsRepository
@@ -36,13 +37,21 @@ class TripCheckListViewModel @Inject constructor(
         thingsRepository.changeThingToTrip(tripModel)
     }
 
+    fun deleteThing(tripId: String, thingModel: ThingModel) {
+        thingsRepository.deleteThingToTrip(tripId, thingModel)
+    }
+
+    fun shareTrip(tripId: String, email: String) {
+        tripsRepository.addOwnerToTrip(tripId, email)
+    }
+
     fun startTripListener(tripId: String) {
         viewModelScope.launch {
             try {
                 val trip = tripsRepository.startTripListener(tripId).first()
 
-            if (trip != null) _tripModel.value =
-                tripsRepository.startTripListener(tripId).first()//.asLiveData()
+                if (trip != null) _tripModel.value =
+                    tripsRepository.startTripListener(tripId).first()//.asLiveData()
             } catch (e: NoSuchElementException) {
                 Log.d("TAG", "startTripListener: $e ")
             }

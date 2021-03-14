@@ -9,7 +9,7 @@ data class TripModel(
     var dateFrom: Long? = null,
     var dateTo: String? = null,
     var city: String? = null,
-    val things: MutableList<ThingModel> = mutableListOf(),
+    var things: MutableList<ThingModel> = mutableListOf(),
     val toDos: MutableList<ToDoModel> = mutableListOf(),
     val owner: MutableList<String> = mutableListOf()
 )
