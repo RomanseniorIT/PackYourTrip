@@ -5,7 +5,8 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.icu.util.Calendar
+//import android.icu.util.Calendar
+import java.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,7 +28,6 @@ class CreateTripDialog(private val listener: TripListener) : DialogFragment() {
     private var etCity: EditText? = null
     private var etDate: EditText? = null
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,28 +44,36 @@ class CreateTripDialog(private val listener: TripListener) : DialogFragment() {
         return v
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun editDate(view: View) {
         mDisplayDate = view.findViewById(R.id.et_date);
-        mDisplayDate!!.setOnClickListener {
-            val cal = Calendar.getInstance()
-            val year = cal[Calendar.YEAR]
-            val month = cal[Calendar.MONTH]
-            val day = cal[Calendar.DAY_OF_MONTH]
-            val dialog = DatePickerDialog(
-                requireContext(),
-                android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month, day
-            )
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.show()
+        mDisplayDate?.setOnFocusChangeListener { view, b ->
+            if (b) {
+               showCalendar()
+            }
+        }
+        mDisplayDate?.setOnClickListener {
+               showCalendar()
         }
         mDateSetListener =
             OnDateSetListener { datePicker, year, month, day ->
                 var month = month
-                month = month + 1
+                month += 1
                 val date = "$day/$month/$year"
                 mDisplayDate?.setText(date, TextView.BufferType.EDITABLE)
             }
+    }
+    
+    private fun showCalendar(){
+        val cal = Calendar.getInstance()
+        val year = cal[Calendar.YEAR]
+        val month = cal[Calendar.MONTH]
+        val day = cal[Calendar.DAY_OF_MONTH]
+        val dialog = DatePickerDialog(
+            requireContext(),
+            android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month, day
+        )
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
     }
 
     private fun onClickBtnSave() {
