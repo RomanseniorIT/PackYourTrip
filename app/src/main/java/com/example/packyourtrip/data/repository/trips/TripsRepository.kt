@@ -12,4 +12,5 @@ interface TripsRepository {
     suspend fun getTripById(tripId: String, userEmail: String): TripModel?
     fun startTripListener(tripId: String): Flow<TripModel>
     fun stopTripListener()
+    suspend fun getDefaultThing() : TripModel
 }
