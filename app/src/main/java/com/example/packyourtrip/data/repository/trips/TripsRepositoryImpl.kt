@@ -76,6 +76,10 @@ class TripsRepositoryImpl @Inject constructor(
         return trips
     }
 
+    override suspend fun getDefaultThing() : TripModel {
+        return loadTrips("DEFAULT")[0]
+    }
+
     //Слушатель изменений в поездке
     @ExperimentalCoroutinesApi
     override fun startTripListener(tripId: String): Flow<TripModel> =
