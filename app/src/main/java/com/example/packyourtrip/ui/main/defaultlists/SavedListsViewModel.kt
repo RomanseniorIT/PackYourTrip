@@ -35,4 +35,11 @@ class SavedListsViewModel @Inject constructor(
         }
     }
 
+    fun deleteSavedThings(tripModel: TripModel) {
+        viewModelScope.launch {
+            savedThingRepository.deleteSavedList(tripModel.id!!)
+            loadSavedThings()
+        }
+    }
+
 }

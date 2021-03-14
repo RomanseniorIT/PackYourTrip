@@ -1,6 +1,7 @@
 package com.example.packyourtrip.ui.main.defaultlists
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
@@ -8,11 +9,13 @@ import com.example.packyourtrip.data.model.SavedThingsModel
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.ui.main.TripListener
 
-class SavedListsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val tvSaved: TextView = itemView.findViewById(R.id.tv_saved_list)
+class SavedListsViewHolder(itemView: View, private val callback: SavedListsAdapter.Callback?) : RecyclerView.ViewHolder(itemView) {
+    private val tvSaved: TextView = itemView.findViewById(R.id.tv_name_trip)
+    private val ivDeleteTrip: ImageView = itemView.findViewById(R.id.iv_delete_trip)
 
     fun onBind(item: TripModel, listener: TripListener) {
         itemView.setOnClickListener { listener.itemClicked(item.title ?: "") }
         tvSaved.text = item.title
+        ivDeleteTrip.setOnClickListener { callback?.delete(item) }
     }
 }
