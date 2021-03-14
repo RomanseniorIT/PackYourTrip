@@ -6,11 +6,19 @@ import com.example.packyourtrip.R
 import com.example.packyourtrip.data.model.ThingModel
 import com.google.android.material.checkbox.MaterialCheckBox
 
-class ThingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class ThingViewHolder(itemView: View, private val callback: ThingAdapter.Callback?): RecyclerView.ViewHolder(itemView) {
     private var checkBox: MaterialCheckBox = itemView.findViewById(R.id.checkbox_things)
 
     fun onBind(thing: ThingModel){
         checkBox.text = thing.title
         checkBox.isChecked = thing.isDone ?: false
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            callback?.checkThing(
+                ThingModel(
+                    checkBox.text.toString(),
+                    isChecked
+                )
+            )
+        }
     }
 }

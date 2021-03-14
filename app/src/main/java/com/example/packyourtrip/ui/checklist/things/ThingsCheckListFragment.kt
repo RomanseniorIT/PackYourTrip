@@ -4,24 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.data.model.ThingModel
+import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.databinding.FragmentThingChecklistBinding
-import com.example.packyourtrip.injectViewModel
 import com.example.packyourtrip.ui.checklist.TripCheckListFragment
 import dagger.android.support.DaggerFragment
-import javax.inject.Inject
 
-class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist) {
+class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist), CreateThingDialog.Callback, ThingAdapter.Callback {
     private val spanCount = 12
+    private var tripId: String = ""
     private var _binding: FragmentThingChecklistBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var thingAdapter: ThingAdapter
     private lateinit var defaultThingAdapter: DefaultThingAdapter
+    private lateinit var tripModel: TripModel
 
     lateinit var viewModel: TripCheckListViewModel
 
@@ -68,6 +69,8 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
 
     private fun initObservers() {
         viewModel.tripModel.observe(viewLifecycleOwner, {
+            tripModel = it
+            tripId = it.id ?: ""
             thingAdapter.updateData(it.things)
         })
     }
@@ -75,7 +78,14 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
     private fun init() {
         viewModel = (parentFragment as TripCheckListFragment).viewModel
         thingAdapter = ThingAdapter()
+        thingAdapter.setCallback(this)
         defaultThingAdapter = DefaultThingAdapter()
+
+        binding.btnAddThing.setOnClickListener {
+            val createThingDialog = CreateThingDialog()
+            createThingDialog.setCallback(this)
+            createThingDialog.show(parentFragmentManager, "CreateThingDialog")
+        }
     }
 
     companion object {
@@ -83,4 +93,12 @@ class ThingsCheckListFragment : DaggerFragment(R.layout.fragment_thing_checklist
         fun newInstance() =
             ThingsCheckListFragment()
     }
+
+    override fun addThing(thing: String) {
+        viewModel.addThing(tripId, thing)
+    }
+
+    override fun checkThing(thingModel: ThingModel) {
+    }
+
 }

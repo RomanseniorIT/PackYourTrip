@@ -1,4 +1,4 @@
-package com.example.packyourtrip.ui.dialog
+package com.example.packyourtrip.ui.main.trip
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener

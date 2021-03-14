@@ -1,7 +1,6 @@
 package com.example.packyourtrip.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -9,11 +8,8 @@ import android.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.packyourtrip.R
-import com.example.packyourtrip.ui.dialog.CreateTripDialog
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -48,8 +44,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 
     companion object {
 
