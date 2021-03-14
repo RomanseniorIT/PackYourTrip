@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.packyourtrip.data.model.ThingModel
 import com.example.packyourtrip.data.model.ToDoModel
 import com.example.packyourtrip.data.model.TripModel
+import com.example.packyourtrip.data.repository.things.SavedThingRepository
+import com.example.packyourtrip.data.repository.things.SavedThingRepositoryImpl
 import com.example.packyourtrip.data.repository.things.ThingsRepository
 import com.example.packyourtrip.data.repository.trips.TripsRepository
 import com.example.packyourtrip.utils.MainPrefs
@@ -17,7 +19,8 @@ import javax.inject.Inject
 
 class TripCheckListViewModel @Inject constructor(
     private val thingsRepository: ThingsRepository,
-    private val tripsRepository: TripsRepository
+    private val tripsRepository: TripsRepository,
+    private val savedThingRepository: SavedThingRepository
 ) : ViewModel() {
 
     private val _tripModel = MutableLiveData<TripModel>()
@@ -28,6 +31,9 @@ class TripCheckListViewModel @Inject constructor(
 
     private val _defActions = MutableLiveData<List<ToDoModel>>()
     val defActions: LiveData<List<ToDoModel>> get() = _defActions
+
+    private val _savedList = MutableLiveData<List<TripModel>>()
+    val savedList: LiveData<List<TripModel>> get() = _savedList
 
     fun getTrip(tripId: String) {
         viewModelScope.launch {
@@ -74,6 +80,16 @@ class TripCheckListViewModel @Inject constructor(
 
     fun stopTripListener() {
         tripsRepository.stopTripListener()
+    }
+
+    fun addSavedList(tripModel: TripModel) {
+        savedThingRepository.addSavedList(tripModel)
+    }
+
+    fun loadSavedList(){
+        viewModelScope.launch {
+            _savedList.value = savedThingRepository.loadSavedList(MainPrefs.userEmail)
+        }
     }
 
     override fun onCleared() {
