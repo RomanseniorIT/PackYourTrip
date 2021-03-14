@@ -7,8 +7,9 @@ import com.example.packyourtrip.R
 import com.example.packyourtrip.data.model.SavedThingsModel
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.ui.checklist.things.DefaultThingViewHolder
+import com.example.packyourtrip.ui.main.TripListener
 
-class SavedListsAdapter() : RecyclerView.Adapter<SavedListsViewHolder>() {
+class SavedListsAdapter(private val listener : TripListener) : RecyclerView.Adapter<SavedListsViewHolder>() {
     private val list: MutableList<SavedThingsModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedListsViewHolder {
@@ -19,7 +20,7 @@ class SavedListsAdapter() : RecyclerView.Adapter<SavedListsViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SavedListsViewHolder, position: Int) {
-        holder.onBind(list.get(position))
+        holder.onBind(list.get(position), listener)
     }
 
     override fun getItemCount(): Int = list.size
