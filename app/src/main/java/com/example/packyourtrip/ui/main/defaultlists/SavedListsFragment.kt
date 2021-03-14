@@ -8,12 +8,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.injectViewModel
+import com.example.packyourtrip.ui.main.TripListener
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 
-class SavedListsFragment : DaggerFragment() {
+class SavedListsFragment : DaggerFragment(), TripListener, SavedListsAdapter.Callback {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -32,6 +35,8 @@ class SavedListsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         initRecycler(view)
+        val fabBtn: FloatingActionButton = view.findViewById(R.id.btn_add_saved)
+        fabBtn.setOnClickListener { onClickFabBtn() }
         savedListsViewModel.savedList.observe(viewLifecycleOwner) { savedList ->
             savedListsAdapter.bindThings(savedList)
         }
@@ -41,7 +46,8 @@ class SavedListsFragment : DaggerFragment() {
     private fun initRecycler(view: View) {
         val recyclerTrips: RecyclerView = view.findViewById(R.id.recycler_saved_list)
         recyclerTrips.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        savedListsAdapter = SavedListsAdapter()
+        savedListsAdapter = SavedListsAdapter(this)
+        savedListsAdapter.setCallback(this)
         recyclerTrips.adapter = savedListsAdapter
     }
 
@@ -49,11 +55,27 @@ class SavedListsFragment : DaggerFragment() {
         savedListsViewModel = injectViewModel(viewModelFactory)
     }
 
+    private fun onClickFabBtn() {
+        CreateDefaultDialog(this).show(parentFragmentManager, "CreateDefaultDialog")
+    }
+
+
+    override fun itemClicked(tripId: String) {
+
+    }
+
+    override fun saveBtnClicked(name: String, city: String, date: String) {
+        savedListsViewModel.addSavedThings(TripModel(title = name))
+    }
 
     companion object {
 
         @JvmStatic
         fun newInstance() =
             SavedListsFragment()
+    }
+
+    override fun delete(trip: TripModel) {
+        savedListsViewModel.deleteSavedThings(trip)
     }
 }
