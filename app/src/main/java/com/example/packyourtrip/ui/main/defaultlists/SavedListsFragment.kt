@@ -39,8 +39,8 @@ class SavedListsFragment : DaggerFragment(), TripListener {
         initRecycler(view)
         val fabBtn: FloatingActionButton = view.findViewById(R.id.btn_add_saved)
         fabBtn.setOnClickListener { onClickFabBtn() }
-        savedListsViewModel.thingsList.observe(viewLifecycleOwner) { thingsList ->
-            savedListsAdapter.bindThings(thingsList)
+        savedListsViewModel.savedList.observe(viewLifecycleOwner) { savedList ->
+            savedListsAdapter.bindThings(savedList)
         }
         savedListsViewModel.loadSavedThings()
     }

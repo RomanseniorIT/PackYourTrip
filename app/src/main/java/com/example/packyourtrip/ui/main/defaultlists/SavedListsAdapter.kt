@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
-import com.example.packyourtrip.data.model.SavedThingsModel
 import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.ui.checklist.things.DefaultThingViewHolder
 import com.example.packyourtrip.ui.main.TripListener
@@ -25,7 +24,7 @@ class SavedListsAdapter(private val listener : TripListener) : RecyclerView.Adap
 
     override fun getItemCount(): Int = list.size
 
-    fun bindThings(trips: List<SavedThingsModel>) {
+    fun bindThings(trips: List<TripModel>) {
         list.clear()
         list.addAll(trips)
         notifyDataSetChanged()
