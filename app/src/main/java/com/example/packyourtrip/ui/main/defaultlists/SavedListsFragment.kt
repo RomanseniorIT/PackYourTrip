@@ -32,8 +32,8 @@ class SavedListsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         initRecycler(view)
-        savedListsViewModel.thingsList.observe(viewLifecycleOwner) { thingsList ->
-            savedListsAdapter.bindThings(thingsList)
+        savedListsViewModel.savedList.observe(viewLifecycleOwner) { savedList ->
+            savedListsAdapter.bindThings(savedList)
         }
         savedListsViewModel.loadSavedThings()
     }

@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class TripFragment : DaggerFragment(), TripListener {
+class TripFragment : DaggerFragment(), TripListener, TripAdapter.Callback {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -61,6 +61,7 @@ class TripFragment : DaggerFragment(), TripListener {
         val recyclerTrips: RecyclerView = view.findViewById(R.id.recycler_trips)
         recyclerTrips.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         tripAdapter = TripAdapter(this)
+        tripAdapter.setCallback(this)
         recyclerTrips.adapter = tripAdapter
     }
 
@@ -83,5 +84,9 @@ class TripFragment : DaggerFragment(), TripListener {
 
     override fun saveBtnClicked(tripName: String, city: String, date: String) {
         tripViewModel.addTrip(TripModel(title = tripName, city = city, dateFrom = date))
+    }
+
+    override fun delete(trip: TripModel) {
+        tripViewModel.deleteTrip(trip.id!!)
     }
 }
