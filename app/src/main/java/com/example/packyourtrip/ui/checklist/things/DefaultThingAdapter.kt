@@ -8,21 +8,25 @@ import com.example.packyourtrip.data.model.ThingModel
 
 class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
     private val listThings: MutableList<ThingModel> = mutableListOf(
-        ThingModel(title = "Паспорт"),
-        ThingModel(title = "Билет"),
-        ThingModel(title = "Книга"),
-        ThingModel(title = "Ноутбук"),
-        ThingModel(title = "Зарядка для ноутбука"),
-        ThingModel(title = "Зарядка для "),
-        ThingModel(title = "Зарядка для ноу"),
-        ThingModel(title = "Зарядка для ноутбукаЗарядка для ноутбука"),
-        ThingModel(title = "Плавки")
+        ThingModel("Паспорт", false),
+        ThingModel("Билет", false),
+        ThingModel("Книга", false),
+        ThingModel("Ноутбук", false),
+        ThingModel("Зарядка для ноутбука", false),
+        ThingModel("Зарядка для ", false),
+        ThingModel("Зарядка для ноу", false),
+        ThingModel("Зарядка для ноутбукаЗарядка для ноутбука", false),
+        ThingModel("Плавки", false)
     )
+
+    private val listToCompare = mutableListOf<ThingModel>()
+
+    private var callback: Callback? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultThingViewHolder {
         return DefaultThingViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_holder_default_things, parent, false)
+                .inflate(R.layout.view_holder_default_things, parent, false), callback
         )
     }
 
@@ -33,9 +37,40 @@ class DefaultThingAdapter() : RecyclerView.Adapter<DefaultThingViewHolder>() {
 
     fun getItems(): List<ThingModel> = listThings
 
-    fun updateData(list: List<ThingModel>) {
+    fun setData(list: List<ThingModel>) {
         listThings.clear()
         listThings.addAll(list)
+        syncWithCheckList()
+    }
+
+    private fun syncWithCheckList() {
+        listThings.forEach { default ->
+            listToCompare.forEach { thing ->
+                default.isDone = default.title == thing.title
+            }
+        }
         notifyDataSetChanged()
+    }
+
+    fun syncWithCheckList(list: List<ThingModel>) {
+        listToCompare.clear()
+        listToCompare.addAll(list)
+        listThings.forEach { default ->
+            val isSame = listToCompare.firstOrNull { thing ->
+                default.title == thing.title
+            }
+            default.isDone = isSame != null
+        }
+        notifyDataSetChanged()
+    }
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
+    }
+
+    interface Callback {
+
+        fun addDefault(thingModel: ThingModel)
+
     }
 }
