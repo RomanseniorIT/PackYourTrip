@@ -2,6 +2,7 @@ package com.example.packyourtrip.data.repository.trips
 
 import android.util.Log
 import com.example.packyourtrip.data.model.TripModel
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.Dispatchers
@@ -147,7 +148,7 @@ class TripsRepositoryImpl @Inject constructor(
     // Добавление пользователя в поездку
     override fun addOwnerToTrip(tripId: String, email: String) {
         db.collection("trips").document(tripId)
-            .update("owner", email)
+            .update("owner", FieldValue.arrayUnion(email))
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
