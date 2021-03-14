@@ -2,21 +2,16 @@ package com.example.packyourtrip.ui.main.createdefault
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toolbar
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.packyourtrip.R
-import com.example.packyourtrip.ui.main.MainFragmentAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 class CreateDefaultFragment : Fragment(R.layout.fragment_create_default) {
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 

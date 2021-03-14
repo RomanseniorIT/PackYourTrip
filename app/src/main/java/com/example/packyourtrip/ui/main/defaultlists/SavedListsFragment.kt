@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.data.model.TripModel
 import com.example.packyourtrip.injectViewModel
 import com.example.packyourtrip.ui.main.MainFragmentDirections
 import com.example.packyourtrip.ui.main.TripListener
@@ -62,14 +63,11 @@ class SavedListsFragment : DaggerFragment(), TripListener {
 
 
     override fun itemClicked(tripId: String) {
-       // findNavController().navigate(
-      //      MainFragmentDirections.actionMainFragmentToTripCheckListFragment(tripId)
-       // )
+      
     }
 
     override fun saveBtnClicked(name: String, city: String, date: String) {
-
-
+        savedListsViewModel.addSavedThings(TripModel(title = name))
     }
 
     companion object {

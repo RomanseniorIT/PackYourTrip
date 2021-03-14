@@ -1,4 +1,4 @@
-package com.example.packyourtrip.ui.main.createdefault
+package com.example.packyourtrip.ui.main.createdefault.things
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packyourtrip.R
+import com.example.packyourtrip.ui.main.createdefault.things.CreateDefaultThingAdapter
 
 
 class CreateThingsCheckListFragment : Fragment() {
