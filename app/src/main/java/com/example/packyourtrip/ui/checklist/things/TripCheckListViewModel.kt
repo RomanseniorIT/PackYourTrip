@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TripCheckListViewModel @Inject constructor(
-    private val repository: ThingsRepository,
+    private val thingsRepository: ThingsRepository,
     private val tripsRepository: TripsRepository
 ) : ViewModel() {
 
@@ -23,5 +23,13 @@ class TripCheckListViewModel @Inject constructor(
         viewModelScope.launch {
             _tripModel.value = tripsRepository.getTripById(tripId, MainPrefs.userEmail)
         }
+    }
+
+    fun addThing(tripId: String, thing: String) {
+        thingsRepository.addThingToTrip(tripId, thing)
+    }
+
+    fun changeThingToTrip(tripModel: TripModel){
+        thingsRepository.changeThingToTrip(tripModel)
     }
 }

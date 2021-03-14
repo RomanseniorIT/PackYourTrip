@@ -12,9 +12,9 @@ class ThingsRepositoryImpl @Inject constructor(
 ) : ThingsRepository {
 
     //Добавление вещи в поездку
-    override fun addThingToTrip(tripId: String, thingModel: ThingModel) {
+    override fun addThingToTrip(tripId: String, thing: String) {
         db.collection("trips").document(tripId)
-            .update("things", FieldValue.arrayUnion(thingModel))
+            .update("things", FieldValue.arrayUnion(ThingModel(thing, false)))
             .addOnSuccessListener {
                 Log.d(
                     TAG,

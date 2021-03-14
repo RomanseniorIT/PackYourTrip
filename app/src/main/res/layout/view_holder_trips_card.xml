@@ -5,50 +5,55 @@
     android:id="@+id/card_view_trip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:layout_margin="8dp"
+    android:layout_marginBottom="8dp"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="10dp"
-    app:strokeColor="#565665"
-    app:strokeWidth="0.5dp">
+    app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="0.5dp">
+        android:layout_margin="0.5dp"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_name_trip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textSize="36sp"
             android:textColor="#858585"
-            android:textStyle="bold"
+            android:textSize="30sp"
+            app:layout_constraintStart_toEndOf="@id/view"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_date_trip"
             tools:text="Хакатон" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="20dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_trip_item_decor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintStart_toStartOf="@id/tv_name_trip"
             app:layout_constraintTop_toBottomOf="@id/tv_name_trip"
-            tools:text = "Виртуальная реальность"/>
+            tools:text="Виртуальная реальность" />
 
         <TextView
             android:id="@+id/tv_date_trip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd ="10dp"
-            android:textColor="#858585"
-            app:layout_constraintTop_toBottomOf="@id/tv_name_trip"
+            android:layout_marginEnd="10dp"
+            android:textColor="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_trip"
             tools:text="12.03.2021" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </com.google.android.material.card.MaterialCardView>
