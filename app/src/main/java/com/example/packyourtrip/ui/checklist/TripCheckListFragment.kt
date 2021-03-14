@@ -80,7 +80,7 @@ class TripCheckListFragment() : DaggerFragment(R.layout.fragment_trip_checklist)
         binding.pager.adapter = tripCheckListFragmentAdapter
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             when (position) {
-                0 -> tab.text = tripName
+                0 -> tab.text = "Сбор в поездку"
             }
         }.attach()
     }
