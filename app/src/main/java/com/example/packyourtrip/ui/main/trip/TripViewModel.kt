@@ -53,6 +53,7 @@ class TripViewModel @Inject constructor(
     fun deleteTrip(tripId: String) {
         viewModelScope.launch {
             tripRepository.deleteTrip(tripId)
+            loadTrips()
         }
     }
 
