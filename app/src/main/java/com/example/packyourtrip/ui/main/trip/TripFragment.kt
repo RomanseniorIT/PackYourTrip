@@ -84,6 +84,6 @@ class TripFragment : DaggerFragment(), TripListener {
     }
 
     override fun saveBtnClicked(tripName: String, city: String, date: String) {
-        tripViewModel.addTrip(TripModel(title = tripName, city = city, dateFrom = 100000))
+        tripViewModel.addTrip(TripModel(title = tripName, city = city, dateFrom = date))
     }
 }
